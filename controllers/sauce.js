@@ -142,7 +142,7 @@ exports.deleteSauce = function (req, res, next) {
 };
 //Likes et dislikes
 exports.likeSauce = function (req, res, next) {
-    Sauce.findOne({
+    Sauce.findOne({ //retourne la sauce selectionnée
             _id: req.params.id
         })
         .then(function (sauce) {
@@ -164,7 +164,7 @@ exports.likeSauce = function (req, res, next) {
 
                         if (counterLike === usersLikedArray.length) { //L'utilisateur à liké la sauce
                             usersLikedArray.push(userId);
-                            Sauce.updateOne({ //Mise à jour de l'API qui renvoi les informations au frontend
+                            Sauce.updateOne({ //appel à la fonction de mise à jour d'une sauce (mise à jour de l'objet en base de donnée)
                                     _id: req.params.id
                                 }, {
                                     $set: {
@@ -186,7 +186,7 @@ exports.likeSauce = function (req, res, next) {
                             for (let i in usersDislikedArray) { //On recherche si l'utilisateur n'avait pas disliké la sauce
                                 if (usersDislikedArray[i] === userId) { //Si dislike éxistant
                                     usersDislikedArray.splice(i, 1); //On le retire du tableau
-                                    Sauce.updateOne({ //Mise à jour de l'API qui renvoi les informations au frontend
+                                    Sauce.updateOne({ //appel à la fonction de mise à jour d'une sauce (mise à jour de l'objet en base de donnée)
                                             _id: req.params.id
                                         }, {
                                             $set: {
