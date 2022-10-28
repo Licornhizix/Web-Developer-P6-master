@@ -35,7 +35,7 @@ exports.login = (req, res, next) => {
                     error: 'Utilisateur non trouvé !'
                 });
             }
-            bcrypt.compare(req.body.password, user.password)
+            bcrypt.compare(req.body.password, user.password) //verification des MDP via bcrypt
                 .then(valid => {
                     if (!valid) {
                         return res.status(401).json({

@@ -2,11 +2,11 @@ const jwt = require("jsonwebtoken");
 
 module.exports = function (req, res, next) {
     try {
-        const token = req.headers.authorization.split(" ")[1];
-        const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
-        const userId = decodedToken.userId;
+        const token = req.headers.authorization.split(" ")[1]; //recupération du token
+        const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET"); //
+        const userId = decodedToken.userId; //recupération du userid
         req.auth = {
-            userId
+            userId //recupération de la valeur de l'userid pour la transmettre aux routes pour vérification
         };
         if (req.body.userId && req.body.userId !== userId) {
             throw "Invalid user ID";
@@ -15,7 +15,7 @@ module.exports = function (req, res, next) {
         }
     } catch {
         res.status(403).json({
-            error: new Error("403: unauthorized request.")
+            error: new Error("403: unauthorized request.") // en cas de problème d'authentification
         });
     }
 };
