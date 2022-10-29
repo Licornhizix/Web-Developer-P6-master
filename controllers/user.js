@@ -1,6 +1,16 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+let rand = function () {
+    return Math.random().toString(36).substr(2); // remove `0.`
+};
+
+let token = function () {
+    return rand() + rand(); // to make it longer
+};
+
+
+
 
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
@@ -42,12 +52,22 @@ exports.login = (req, res, next) => {
                             error: 'Mot de passe incorrect !'
                         });
                     }
+                    /* res.status(200).json({
+                         userId: user._id,
+                         token: jwt.sign({
+                                 userId: user._id
+                             },
+                             'RANDOM_TOKEN_SECRET', {
+                                 expiresIn: '24h'
+                             }
+                         )
+                     });*/
                     res.status(200).json({
                         userId: user._id,
                         token: jwt.sign({
                                 userId: user._id
                             },
-                            'RANDOM_TOKEN_SECRET', {
+                            token(), {
                                 expiresIn: '24h'
                             }
                         )
@@ -61,3 +81,14 @@ exports.login = (req, res, next) => {
             error
         }));
 };
+
+/*let rand = function() {
+    return Math.random().toString(36).substr(2); // remove `0.`
+};
+
+let token = function() {
+    return rand() + rand(); // to make it longer
+};
+
+token(); // "bnh5yzdirjinqaorq0ox1tf383nb3xr
+*/
